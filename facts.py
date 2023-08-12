@@ -4,7 +4,7 @@ import requests
 
 # Define parameters
 λ = 1 / 100_000  # Parameter for exponential distribution of q. Prob 1 - 1/e^n that q < n*λ
-
+debug = False
 
 # Define functions
 def is_interesting(article):
@@ -21,7 +21,7 @@ article = None
 ok = False
 while not ok:
     q = math.floor(random.expovariate(λ))
-    print(f"Q = {q}")
+    debug and print(f"Q = {q}")
     url = f"https://www.wikidata.org/w/rest.php/wikibase/v0/entities/items/Q{q}"
     response = requests.get(url)
     if not response.status_code == 200:
@@ -39,6 +39,6 @@ indef_article = "an" if description[0].lower() in "aeiou" else "a"
 fact = f"{title} is {indef_article} {description}."
 
 # Write fact
-print()
+debug and print("---")
 print(fact)
 
