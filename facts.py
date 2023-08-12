@@ -2,13 +2,15 @@ import math
 import random
 import requests
 
+from property import *
+
 # Define parameters
 λ_inv = 100_000  # Parameter for exponential distribution of q. Prob 1 / e^n that q > n * λ_inv
 debug = False
 
 # Define functions
 def is_interesting(article):
-    if 'en' in article['labels'] and 'en' in article['descriptions']:
+    if EnLabel.has(article) and EnDescription.has(article):
         return True
 
 
@@ -31,12 +33,9 @@ while not ok:
     ok = is_interesting(article)
 
 # Get fact
-title = article['labels']['en']
-title = title[0].upper() + title[1:]
-description = article['descriptions']['en']
-indef_article = "an" if description[0].lower() in "aeiou" else "a"
-
-fact = f"{title} is {indef_article} {description}."
+title = EnLabel.get(article)
+fact_property = EnDescription.generate_fact(article)
+fact = f"{title} {fact_property}."
 
 # Write fact
 debug and print("---")
