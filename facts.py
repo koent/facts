@@ -3,7 +3,7 @@ import random
 import requests
 
 # Define parameters
-λ = 1 / 100_000  # Parameter for exponential distribution of q. Prob 1 - 1/e^n that q < n*λ
+λ_inv = 100_000  # Parameter for exponential distribution of q. Prob 1 / e^n that q > n * λ_inv
 debug = False
 
 # Define functions
@@ -20,7 +20,7 @@ article = None
 # Get article
 ok = False
 while not ok:
-    q = math.floor(random.expovariate(λ))
+    q = math.floor(random.expovariate(1 / λ_inv))
     debug and print(f"Q = {q}")
     url = f"https://www.wikidata.org/w/rest.php/wikibase/v0/entities/items/Q{q}"
     response = requests.get(url)
