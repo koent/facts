@@ -1,10 +1,9 @@
-import json
 import math
 import random
 import requests
 import sys
 
-from article import *
+from article import Article
 from property import *
 
 # Define parameters
@@ -28,18 +27,23 @@ while not ok:
     url = f"https://www.wikidata.org/w/rest.php/wikibase/v0/entities/items/Q{q}"
     response = requests.get(url)
     if not response.status_code == 200:
+        debug and print(f"Status code {response.status_code}")
         continue
 
-    article = Article.from_json(response.text)
-    ok = article.is_interesting()
+    try:
+        article = Article.from_json(response.text)
+        ok = True
+    except Exception as ex:
+        debug and print(ex)
+        continue
+
 
 # Get fact
-title = article.get(EnLabel)
 if article.has(Translation):
     fact_property = article.generate_fact(Translation)
 else:
-    fact_property = article.generate_fact(EnDescription)
-fact = f"{title} {fact_property}."
+    fact_property = article.description_fact()
+fact = f"{article.label} {fact_property}."
 
 # Write fact
 debug and print("---")

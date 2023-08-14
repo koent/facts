@@ -24,25 +24,8 @@ class IProperty(ABC):
     @abstractmethod
     def generate_fact(article: BArticle): ...
 
-class EnLabel(IProperty):
-    def id():
-        return None
 
-    def weight():
-        return 0
-
-    def has(article: BArticle):
-        return 'en' in article.labels
-
-    def get(article: BArticle):
-        label = article.labels['en']
-        return label[0].upper() + label[1:]
-
-    def generate_fact(article):
-        raise Exception("EnLabel cannot generate fact")
-
-
-class EnDescription(IProperty):
+class Description(IProperty):
     def id():
         return None
 
@@ -50,15 +33,15 @@ class EnDescription(IProperty):
         return 10
 
     def has(article: BArticle):
-        return 'en' in article.descriptions
+        return True
 
     def get(article: BArticle):
-        return article.descriptions['en']
+        return article.description
 
     def generate_fact(article: BArticle):
-        description = EnDescription.get(article)
-        indef_article = "an" if description[0].lower() in "aeiou" else "a"
-        return f"is {indef_article} {description}"
+        indef_article = "an" if article.description[0].lower() in "aeiou" else "a"
+        return f"is {indef_article} {article.description}"
+
 
 class Translation(IProperty):
     languages = {'en' : "English", 'fr' : "French", 'ru': "Russian", 'el': "Greek"}
@@ -80,5 +63,5 @@ class Translation(IProperty):
         return f"is called {translation} in {language}"
 
     def available_translations(article: BArticle):
-        title = EnLabel.get(article)
+        title = article.label
         return {k:v for k,v in article.labels.items() if not v == title and k in Translation.languages}
