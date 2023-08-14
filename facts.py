@@ -1,6 +1,8 @@
+import json
 import math
 import random
 import requests
+import sys
 
 from property import *
 
@@ -18,9 +20,13 @@ def is_interesting(article):
 q : int = 0
 article = None
 
+# Load article
+if len(sys.argv) == 2:
+    with open(sys.argv[1], 'r') as f:
+        article = json.load(f)
 
 # Get article
-ok = False
+ok = not article == None
 while not ok:
     q = math.floor(random.expovariate(1 / λ_inv))
     debug and print(f"Q = {q}")
@@ -28,7 +34,7 @@ while not ok:
     response = requests.get(url)
     if not response.status_code == 200:
         continue
-    
+
     article = response.json()
     ok = is_interesting(article)
 
