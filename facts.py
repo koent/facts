@@ -40,7 +40,10 @@ while not ok:
 
 # Get fact
 title = EnLabel.get(article)
-fact_property = EnDescription.generate_fact(article)
+if Translation.has(article):
+    fact_property = Translation.generate_fact(article)
+else:
+    fact_property = EnDescription.generate_fact(article)
 fact = f"{title} {fact_property}."
 
 # Write fact
