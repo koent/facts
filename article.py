@@ -5,8 +5,10 @@ import random
 from barticle import BArticle
 from property import IProperty, ALL_PROPERTIES
 
+debug = True
+
 class Article(BArticle):
-    properties = List[Type[IProperty]]
+    properties: List[Type[IProperty]]
 
     def __init__(self, labels, descriptions, aliases, statements, id, **kwargs):
         self.labels = labels
@@ -30,8 +32,23 @@ class Article(BArticle):
     
     def generate_fact(self):
         if len(self.properties) == 0:
-            return "exists"
+            return f"{self.label} exists."
         
-        property = random.choice(self.properties)
+        property = self.random_property()
+        if property == None:
+            return f"{self.label} exists."
+
         fact_property = property.generate_fact(self)
         return f"{self.label} {fact_property}."
+
+    def random_property(self) -> Type[IProperty]:
+        total = sum([prop.weight() for prop in self.properties])
+        value = random.randint(0, total)
+        part = 0
+        debug and print(value, [p.id() for p in self.properties])
+        for prop in self.properties:
+            part += prop.weight()
+            if value <= part:
+                return prop
+
+        return None
