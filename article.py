@@ -18,9 +18,10 @@ class Article(BArticle):
 
         if not 'en' in self.labels:
             raise Exception("Not interesting")
-        
+
         self.label = labels['en']
         self.properties = [prop for prop in ALL_PROPERTIES if self.has(prop)]
+        DEBUG and print(f"Available properties: {[p.id() for p in self.properties]}")
 
     def from_json(json_def):
         parameters : Dict = json.loads(json_def)
@@ -28,11 +29,11 @@ class Article(BArticle):
 
     def has(self, TProperty : Type[IProperty]):
         return TProperty.has(self)
-    
+
     def generate_fact(self):
         if len(self.properties) == 0:
             return f"{self.label} exists."
-        
+
         property = self.random_property()
         if property == None:
             return f"{self.label} exists."
@@ -44,7 +45,7 @@ class Article(BArticle):
         total = sum([prop.weight() for prop in self.properties])
         value = random.randint(0, total)
         part = 0
-        DEBUG and print(value, [p.id() for p in self.properties])
+        DEBUG and print(f"Random property value: {value}")
         for prop in self.properties:
             part += prop.weight()
             if value <= part:

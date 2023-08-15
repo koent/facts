@@ -4,6 +4,7 @@ from typing import List, Type
 
 from barticle import BArticle
 from property_data import LANGUAGES
+from debug import DEBUG
 
 class IProperty(ABC):
     @staticmethod
@@ -57,7 +58,28 @@ class Translation(IProperty):
         return f"is called {translation} in {language}"
 
     def available_translations(article: BArticle):
-        title = article.label
-        return {k:v for k,v in article.labels.items() if not v == title and k in LANGUAGES}
+        return {k:v for k,v in article.labels.items() if not v == article.label and k in LANGUAGES}
 
-ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation]
+class Alias(IProperty):
+    def id():
+        return "C2"
+
+    def weight():
+        return 100
+
+    def has(article: BArticle):
+        for language, aliases in article.aliases:
+            for alias in aliases:
+                if not alias == article.label:
+                    return True
+
+        return False
+
+    def generate_fact(article: BArticle):
+        alternative_aliases = [(language_code, alias) for language_code, aliases in article.aliases.items() for alias in aliases if not alias == article.label]
+        language_code, alias = random.choice(alternative_aliases)
+        language = LANGUAGES[language_code]
+        return f"is also called {alias} in {language}"
+
+
+ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation, Alias]
