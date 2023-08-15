@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import random
+from typing import List, Type
 
 from barticle import BArticle
 
@@ -18,36 +19,30 @@ class IProperty(ABC):
 
     @staticmethod
     @abstractmethod
-    def get(article: BArticle): ...
-
-    @staticmethod
-    @abstractmethod
     def generate_fact(article: BArticle): ...
 
 
 class Description(IProperty):
     def id():
-        return None
+        return "C0"
 
     def weight():
         return 10
 
     def has(article: BArticle):
-        return True
-
-    def get(article: BArticle):
-        return article.description
+        return 'en' in article.descriptions
 
     def generate_fact(article: BArticle):
-        indef_article = "an" if article.description[0].lower() in "aeiou" else "a"
-        return f"is {indef_article} {article.description}"
+        description = article.descriptions['en']
+        indef_article = "an" if description[0].lower() in "aeiou" else "a"
+        return f"is {indef_article} {description}"
 
 
 class Translation(IProperty):
     languages = {'en' : "English", 'fr' : "French", 'ru': "Russian", 'el': "Greek"}
 
     def id():
-        return None
+        return "C1"
 
     def weight():
         return 10
@@ -65,3 +60,5 @@ class Translation(IProperty):
     def available_translations(article: BArticle):
         title = article.label
         return {k:v for k,v in article.labels.items() if not v == title and k in Translation.languages}
+
+ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation]

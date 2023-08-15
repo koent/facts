@@ -4,7 +4,6 @@ import requests
 import sys
 
 from article import Article
-from property import *
 
 # Define parameters
 λ_inv = 100_000  # Parameter for exponential distribution of q. Prob 1 / e^n that q > n * λ_inv
@@ -37,13 +36,8 @@ while not ok:
         debug and print(ex)
         continue
 
-
 # Get fact
-if article.has(Translation):
-    fact_property = article.generate_fact(Translation)
-else:
-    fact_property = article.description_fact()
-fact = f"{article.label} {fact_property}."
+fact = article.generate_fact()
 
 # Write fact
 debug and print("---")
