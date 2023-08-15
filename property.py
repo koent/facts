@@ -3,6 +3,7 @@ import random
 from typing import List, Type
 
 from barticle import BArticle
+from property_data import LANGUAGES
 
 class IProperty(ABC):
     @staticmethod
@@ -39,13 +40,11 @@ class Description(IProperty):
 
 
 class Translation(IProperty):
-    languages = {'en' : "English", 'fr' : "French", 'ru': "Russian", 'el': "Greek"}
-
     def id():
         return "C1"
 
     def weight():
-        return 10
+        return 30
 
     def has(article: BArticle):
         return len(Translation.available_translations(article)) > 0
@@ -53,12 +52,12 @@ class Translation(IProperty):
     def generate_fact(article: BArticle):
         translations = Translation.available_translations(article)
         language_code = random.choice(list(translations.keys()))
-        language = Translation.languages[language_code]
+        language = LANGUAGES[language_code]
         translation = translations[language_code]
         return f"is called {translation} in {language}"
 
     def available_translations(article: BArticle):
         title = article.label
-        return {k:v for k,v in article.labels.items() if not v == title and k in Translation.languages}
+        return {k:v for k,v in article.labels.items() if not v == title and k in LANGUAGES}
 
 ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation]
