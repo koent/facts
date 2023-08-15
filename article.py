@@ -3,9 +3,8 @@ from typing import Dict, List, Type
 import random
 
 from barticle import BArticle
+from debug import DEBUG
 from property import IProperty, ALL_PROPERTIES
-
-debug = True
 
 class Article(BArticle):
     properties: List[Type[IProperty]]
@@ -45,7 +44,7 @@ class Article(BArticle):
         total = sum([prop.weight() for prop in self.properties])
         value = random.randint(0, total)
         part = 0
-        debug and print(value, [p.id() for p in self.properties])
+        DEBUG and print(value, [p.id() for p in self.properties])
         for prop in self.properties:
             part += prop.weight()
             if value <= part:

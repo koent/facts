@@ -4,10 +4,10 @@ import requests
 import sys
 
 from article import Article
+from debug import DEBUG
 
 # Define parameters
 λ_inv = 100_000  # Parameter for exponential distribution of q. Prob 1 / e^n that q > n * λ_inv
-debug = False
 
 # Initialize variables
 q : int = 0
@@ -22,23 +22,23 @@ if len(sys.argv) == 2:
 ok = not article == None
 while not ok:
     q = math.floor(random.expovariate(1 / λ_inv))
-    debug and print(f"Q = {q}")
+    DEBUG and print(f"Q = {q}")
     url = f"https://www.wikidata.org/w/rest.php/wikibase/v0/entities/items/Q{q}"
     response = requests.get(url)
     if not response.status_code == 200:
-        debug and print(f"Status code {response.status_code}")
+        DEBUG and print(f"Status code {response.status_code}")
         continue
 
     try:
         article = Article.from_json(response.text)
         ok = True
     except Exception as ex:
-        debug and print(ex)
+        DEBUG and print(ex)
         continue
 
 # Get fact
 fact = article.generate_fact()
 
 # Write fact
-debug and print("---")
+DEBUG and print("---")
 print(fact)
