@@ -5,15 +5,16 @@ import random
 from barticle import BArticle
 from debug import DEBUG
 from property import IProperty, ALL_PROPERTIES
+from statement import Statement
 
 class Article(BArticle):
     properties: List[Type[IProperty]]
 
-    def __init__(self, labels, descriptions, aliases, statements, id, **kwargs):
+    def __init__(self, labels, descriptions, aliases, statements : Dict, id, **kwargs):
         self.labels = labels
         self.descriptions = descriptions
         self.aliases = aliases
-        self.statements = statements
+        self.statements = {k:[Statement(s) for s in ss] for k,ss in statements.items()}
         self.id = id
 
         if not 'en' in self.labels:
