@@ -16,11 +16,11 @@ Run `python3 facts.py article.json` to get a fact about the article described in
 
 ```
 > python3 facts.py
-Hans Graf von Sponeck is a German general.
+Echinocereus triglochidiatus is a taxon.
 ```
 ```
 > python3 facts.py
-Pisonia is a genus of plants.
+Miklós Szentkuthy is called Сенткути, Миклош in Russian.
 ```
 ```
 > python3 facts.py
@@ -28,12 +28,12 @@ Truttikon is a municipality in Switzerland.
 ```
 ```
 > python3 facts.py
-Wilson Kamavuaka is a Congolese footballer.
+Otto Haupt is a human.
 ```
 
 ### Developing
 
-You can turn on debug messages by setting `debug = True` under parameter definitions.
+You can turn on debug messages by setting `DEBUG = True` in `debug.py`.
 
 
 ### Source
