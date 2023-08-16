@@ -33,7 +33,7 @@ while not ok:
         article = Article.from_json(response.text)
         ok = True
     except Exception as ex:
-        DEBUG and print(ex)
+        DEBUG and print(f"Could not parse article: {ex}")
         continue
 
 # Get fact

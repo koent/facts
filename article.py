@@ -21,6 +21,7 @@ class Article(BArticle):
             raise Exception("Not interesting")
 
         self.label = labels['en']
+        self.capitalized_label = self.label[0].upper() + self.label[1:]
         self.properties = [prop for prop in ALL_PROPERTIES if self.has(prop)]
         DEBUG and print(f"Available properties: {[p.id() for p in self.properties]}")
 
@@ -33,14 +34,15 @@ class Article(BArticle):
 
     def generate_fact(self):
         if len(self.properties) == 0:
-            return f"{self.label} exists."
+            return f"{self.capitalized_label} exists."
 
         property = self.random_property()
         if property == None:
-            return f"{self.label} exists."
+            return f"{self.capitalized_label} exists."
 
+        DEBUG and print(f"Using property {property.id()}")
         fact_property = property.generate_fact(self)
-        return f"{self.label} {fact_property}."
+        return f"{self.capitalized_label} {fact_property}."
 
     def random_property(self) -> Type[IProperty]:
         total = sum([prop.weight() for prop in self.properties])

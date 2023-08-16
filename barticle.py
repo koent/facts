@@ -9,3 +9,4 @@ class BArticle:
     id: str
     statements: Dict[str, List[Statement]]
     label: str
+    capitalized_label: str

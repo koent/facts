@@ -5,6 +5,7 @@ from typing import List, Type
 from barticle import BArticle
 from property_data import LANGUAGES
 from debug import DEBUG
+import helpers
 
 class IProperty(ABC):
     @staticmethod
@@ -36,8 +37,7 @@ class Description(IProperty):
 
     def generate_fact(article: BArticle):
         description = article.descriptions['en']
-        indef_article = "an" if description[0].lower() in "aeiou" else "a"
-        return f"is {indef_article} {description}"
+        return f"is {helpers.indef_article(description)} {description}"
 
 
 class Translation(IProperty):
@@ -65,7 +65,7 @@ class Alias(IProperty):
         return "C2"
 
     def weight():
-        return 100
+        return 30
 
     def has(article: BArticle):
         for language, aliases in article.aliases:
