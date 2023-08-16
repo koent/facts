@@ -81,5 +81,22 @@ class Alias(IProperty):
         language = LANGUAGES[language_code]
         return f"is also called {alias} in {language}"
 
+class InstanceOf(IProperty):
+    def id():
+        return "P31"
+    
+    def weight():
+        return 50
+    
+    def has(article: BArticle):
+        return InstanceOf.id() in article.statements
+    
+    def generate_fact(article: BArticle):
+        statements = article.statements[InstanceOf.id()]
+        DEBUG and print(f"Number of statements: {len(statements)}")
+        statement = random.choice(statements)
+        category = helpers.get_label(statement.value.content)
+        return f"is {helpers.indef_article(category)} {category}"
 
-ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation, Alias]
+
+ALL_PROPERTIES : List[Type[IProperty]] = [Description, Translation, Alias, InstanceOf]
