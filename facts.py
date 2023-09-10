@@ -4,7 +4,7 @@ import requests
 import sys
 
 from article import Article
-from debug import DEBUG
+from debug import DEBUG, MINI_DEBUG
 
 # Define parameters
 λ_inv = 100_000  # Parameter for exponential distribution of q. Prob 1 / e^n that q > n * λ_inv
@@ -36,9 +36,12 @@ while not ok:
         DEBUG and print(f"Could not parse article: {ex}")
         continue
 
+MINI_DEBUG and print(f"Q{q}", end='')
+
 # Get fact
 fact = article.generate_fact()
 
 # Write fact
 DEBUG and print("---")
+MINI_DEBUG and print()
 print(fact)

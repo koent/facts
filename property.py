@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import random
 from typing import List, Type
 
 from barticle import BArticle
@@ -53,7 +52,7 @@ class Translation(IProperty):
 
     def generate_fact(article: BArticle):
         translations = Translation.available_translations(article)
-        language_code = random.choice(list(translations.keys()))
+        language_code = helpers.random_choice(list(translations.keys()))
         language = LANGUAGES[language_code]
         translation = translations[language_code]
         return f"is called {translation} in {language}"
@@ -79,7 +78,7 @@ class Alias(IProperty):
 
     def generate_fact(article: BArticle):
         alternative_aliases = [(language_code, alias) for language_code, aliases in article.aliases.items() for alias in aliases if not alias == article.label]
-        language_code, alias = random.choice(alternative_aliases)
+        language_code, alias = helpers.random_choice(alternative_aliases)
         language = LANGUAGES[language_code]
         return f"is also called {alias} in {language}"
 
@@ -97,7 +96,7 @@ class InstanceOf(IProperty):
     def generate_fact(article: BArticle):
         statements = article.statements[InstanceOf.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
-        statement = random.choice(statements)
+        statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "wikibase-item")
         category = helpers.get_label_from_wikibase_item(statement.content)
         return f"is {helpers.indef_article(category)} {category}"
@@ -116,7 +115,7 @@ class DateOfBirth(IProperty):
     def generate_fact(article: BArticle):
         statements = article.statements[DateOfBirth.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
-        statement = random.choice(statements)
+        statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "time")
         return f"was born on {statement.content:%A, %B %-d, %Y}"
 
@@ -134,7 +133,7 @@ class PlaceOfBirth(IProperty):
     def generate_fact(article: BArticle):
         statements = article.statements[PlaceOfBirth.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
-        statement = random.choice(statements)
+        statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "wikibase-item")
         placeOfBirth = helpers.get_label_from_wikibase_item(statement.content)
         return f"was born in {placeOfBirth}"
@@ -153,7 +152,7 @@ class DateOfDeath(IProperty):
     def generate_fact(article: BArticle):
         statements = article.statements[DateOfDeath.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
-        statement = random.choice(statements)
+        statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "time")
         return f"died on {statement.content:%A, %B %-d, %Y}"
 
@@ -171,7 +170,7 @@ class PlaceOfDeath(IProperty):
     def generate_fact(article: BArticle):
         statements = article.statements[PlaceOfDeath.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
-        statement = random.choice(statements)
+        statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "wikibase-item")
         placeOfDeath = helpers.get_label_from_wikibase_item(statement.content)
         return f"died in {placeOfDeath}"

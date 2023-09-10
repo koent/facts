@@ -3,7 +3,7 @@ from typing import Dict, List, Type
 import random
 
 from barticle import BArticle
-from debug import DEBUG
+from debug import DEBUG, MINI_DEBUG
 from property import IProperty, ALL_PROPERTIES
 from statement import Statement
 
@@ -41,12 +41,13 @@ class Article(BArticle):
             return f"{self.capitalized_label} exists."
 
         DEBUG and print(f"Using property {property.id()}")
+        MINI_DEBUG and print(f"/{property.id()}", end='')
         fact_property = property.generate_fact(self)
         return f"{self.capitalized_label} {fact_property}."
 
     def random_property(self) -> Type[IProperty]:
         total = sum([prop.weight() for prop in self.properties])
-        value = random.randint(0, total)
+        value = random.randrange(total)
         part = 0
         for prop in self.properties:
             part += prop.weight()
