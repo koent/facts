@@ -14,6 +14,6 @@ def indef_article(noun: str):
     return "an" if noun[0].lower() in "aeiou" else "a"
 
 
-def verify_datatype(statement: Statement, data_type: str):
-    if statement.property.dataType != data_type:
-        raise Exception(f"Data type {data_type} expected but {statement.property.dataType} found")
+def verify_data_type(statement: Statement, data_type: str):
+    if statement.data_type != data_type:
+        raise Exception(f"Data type {data_type} expected but {statement.data_type} found")

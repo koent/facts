@@ -98,8 +98,8 @@ class InstanceOf(IProperty):
         statements = article.statements[InstanceOf.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = random.choice(statements)
-        helpers.verify_datatype(statement, "wikibase-item")
-        category = helpers.get_label_from_wikibase_item(statement.value.content)
+        helpers.verify_data_type(statement, "wikibase-item")
+        category = helpers.get_label_from_wikibase_item(statement.content)
         return f"is {helpers.indef_article(category)} {category}"
 
 
@@ -117,9 +117,8 @@ class DateOfBirth(IProperty):
         statements = article.statements[DateOfBirth.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = random.choice(statements)
-        helpers.verify_datatype(statement, "time")
-        date = datetime.fromisoformat(statement.value.content[1:-1])
-        return f"was born on {date:%A, %B %-d, %Y}"
+        helpers.verify_data_type(statement, "time")
+        return f"was born on {statement.content:%A, %B %-d, %Y}"
 
 
 class PlaceOfBirth(IProperty):
@@ -136,8 +135,8 @@ class PlaceOfBirth(IProperty):
         statements = article.statements[PlaceOfBirth.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = random.choice(statements)
-        helpers.verify_datatype(statement, "wikibase-item")
-        placeOfBirth = helpers.get_label_from_wikibase_item(statement.value.content)
+        helpers.verify_data_type(statement, "wikibase-item")
+        placeOfBirth = helpers.get_label_from_wikibase_item(statement.content)
         return f"was born in {placeOfBirth}"
 
 
@@ -155,9 +154,8 @@ class DateOfDeath(IProperty):
         statements = article.statements[DateOfDeath.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = random.choice(statements)
-        helpers.verify_datatype(statement, "time")
-        date = datetime.fromisoformat(statement.value.content[1:-1])
-        return f"died on {date:%A, %B %-d, %Y}"
+        helpers.verify_data_type(statement, "time")
+        return f"died on {statement.content:%A, %B %-d, %Y}"
 
 
 class PlaceOfDeath(IProperty):
@@ -174,8 +172,8 @@ class PlaceOfDeath(IProperty):
         statements = article.statements[PlaceOfDeath.id()]
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = random.choice(statements)
-        helpers.verify_datatype(statement, "wikibase-item")
-        placeOfDeath = helpers.get_label_from_wikibase_item(statement.value.content)
+        helpers.verify_data_type(statement, "wikibase-item")
+        placeOfDeath = helpers.get_label_from_wikibase_item(statement.content)
         return f"died in {placeOfDeath}"
 
 
