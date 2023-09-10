@@ -12,9 +12,21 @@ class StatementValue:
     type: str
     content: Any
 
-    def __init__(self, statementValue) -> None:
+    def __init__(self, statementValue, dataType: str) -> None:
         self.type = statementValue['type']
-        self.content = statementValue['content']
+        if dataType == "wikibase-item":
+            self.content = statementValue['content']
+        elif dataType == "time":
+            self.content = statementValue['content']['time']
+            # plus precision
+        elif dataType == "string":
+            self.content = statementValue['content']
+        elif dataType == "quantity":
+            self.content = statementValue['content']['amount']
+            # plus unit as wikibase-item
+        else:
+            # Data type not implemented yet
+            pass
 
 class Statement:
     id: str
@@ -26,4 +38,4 @@ class Statement:
         self.id = statement['id']
         self.rank = statement['rank']
         self.property = StatementProperty(statement['property'])
-        self.value = StatementValue(statement['value'])
+        self.value = StatementValue(statement['value'], self.property.dataType)

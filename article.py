@@ -48,7 +48,6 @@ class Article(BArticle):
         total = sum([prop.weight() for prop in self.properties])
         value = random.randint(0, total)
         part = 0
-        DEBUG and print(f"Random property value: {value}")
         for prop in self.properties:
             part += prop.weight()
             if value <= part:
