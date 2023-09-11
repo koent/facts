@@ -182,7 +182,27 @@ class PlaceOfDeath(IProperty):
         return f"died in {placeOfDeath}"
 
 
+class Occupation(IProperty):
+    def id():
+        return "P106"
+
+    def weight():
+        return 300
+
+    def has(article: BArticle):
+        return Occupation.id() in article.statements
+
+    def generate_fact(article: BArticle):
+        statements = article.statements[Occupation.id()]
+        DEBUG and print(f"Number of statements: {len(statements)}")
+        statement = helpers.random_choice(statements)
+        helpers.verify_data_type(statement, "wikibase-item")
+        occupation = helpers.get_label_from_wikibase_item(statement.content)
+        return f"{grammar.conjugate(tense = article.tense)} {grammar.indef_article(occupation)} {occupation}"
+
+
 ALL_PROPERTIES : List[Type[IProperty]] = [
     Description, Translation, Alias, InstanceOf,
-    DateOfBirth, PlaceOfBirth, DateOfDeath, PlaceOfDeath
+    DateOfBirth, PlaceOfBirth, DateOfDeath, PlaceOfDeath,
+    Occupation
 ]
