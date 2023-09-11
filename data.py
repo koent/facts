@@ -1,5 +1,8 @@
+from typing import Callable, Dict, List
+from datetime import datetime
+
 # List of languages comes from Q1, might not be exhaustive
-LANGUAGES = {
+LANGUAGES: Dict[str, str] = {
     "en": "English",
     "nl": "Dutch",
     "de": "German",
@@ -216,4 +219,22 @@ LANGUAGES = {
     "zh-sg": "Chinese (Singapore)",
     "zh-tw": "Chinese (Taiwan)",
     "zu": "Zulu"
+}
+
+ORDINAL: List[str] = [
+    "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th",
+    "th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+    "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+
+# Minimum precision needed : [format, format, ...]
+# Precision: 11: day, 10: month, 9: year, 8: decade ...
+# https://www.wikidata.org/wiki/Help:Dates
+DATE_FORMATS: Dict[int, List[Callable[[datetime], str]]] = {
+    11: [lambda dt: f"on {dt:%A, %B %-d, %Y}",
+         lambda dt: f"on the {dt:%-d}th of {dt:%B %Y}",
+         lambda dt: f"on a {dt:%A}"],
+    10: [lambda dt: f"in {dt:%B}",
+         lambda dt: f"in {dt:%B %Y}"],
+    9: [lambda dt: f"in {dt:%Y}"],
+    7: [lambda dt: f"in the {(dt.year + 99) // 100}{ORDINAL[(dt.year + 99) // 100]} century"]
 }

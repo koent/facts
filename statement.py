@@ -19,13 +19,13 @@ class Statement:
         elif self.data_type == "time":
             # Precision: https://www.wikidata.org/wiki/Help:Dates
             precision = int(statementValue['content']['precision'])
+            date = datetime(1, 1, 1)
             if precision >= 11: # day
-                self.content = datetime.fromisoformat(statementValue['content']['time'][1:-1])
+                date = datetime.fromisoformat(statementValue['content']['time'][1:-1])
             elif precision >= 6: # millenium
                 year = int(statementValue['content']['time'][1:5])
-                self.content = datetime(year, 1, 1)
-            else:
-                self.content = datetime(0, 1, 1)
+                date = datetime(year, 1, 1)
+            self.content = {'precision': precision, 'date': date}
         elif self.data_type == "string":
             self.content = statementValue['content']
         elif self.data_type == "quantity":

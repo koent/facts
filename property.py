@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Type
 
 from barticle import BArticle
-from property_data import LANGUAGES
+from data import LANGUAGES
 from debug import DEBUG
 import helpers
 from datetime import datetime
@@ -117,7 +117,10 @@ class DateOfBirth(IProperty):
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "time")
-        return f"was born on {statement.content:%A, %B %-d, %Y}"
+        date = statement.content['date']
+        precision = statement.content['precision']
+        datestr = helpers.random_time_representation(date, precision)
+        return f"was born {datestr}"
 
 
 class PlaceOfBirth(IProperty):
@@ -154,7 +157,10 @@ class DateOfDeath(IProperty):
         DEBUG and print(f"Number of statements: {len(statements)}")
         statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "time")
-        return f"died on {statement.content:%A, %B %-d, %Y}"
+        date = statement.content['date']
+        precision = statement.content['precision']
+        datestr = helpers.random_time_representation(date, precision)
+        return f"died {datestr}"
 
 
 class PlaceOfDeath(IProperty):
