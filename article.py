@@ -4,8 +4,9 @@ import random
 
 from barticle import BArticle
 from debug import DEBUG, MINI_DEBUG
-from property import IProperty, ALL_PROPERTIES
+from property import IProperty, ALL_PROPERTIES, DateOfDeath, PlaceOfDeath
 from statement import Statement
+from grammar import Tense
 
 class Article(BArticle):
     properties: List[Type[IProperty]]
@@ -24,6 +25,9 @@ class Article(BArticle):
         self.capitalized_label = self.label[0].upper() + self.label[1:]
         self.properties = [prop for prop in ALL_PROPERTIES if self.has(prop)]
         DEBUG and print(f"Available properties: {[p.id() for p in self.properties]}")
+
+        passed = self.has(DateOfDeath) or self.has(PlaceOfDeath)
+        self.tense = Tense.PAST if passed else Tense.PRESENT
 
     def from_json(json_def):
         parameters : Dict = json.loads(json_def)

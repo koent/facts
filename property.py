@@ -5,7 +5,7 @@ from barticle import BArticle
 from data import LANGUAGES
 from debug import DEBUG
 import helpers
-from datetime import datetime
+import grammar
 
 class IProperty(ABC):
     @staticmethod
@@ -37,7 +37,7 @@ class Description(IProperty):
 
     def generate_fact(article: BArticle):
         description = article.descriptions['en']
-        return f"is {helpers.indef_article(description)} {description}"
+        return f"{grammar.conjugate(tense=article.tense)} {grammar.indef_article(description)} {description}"
 
 
 class Translation(IProperty):
@@ -55,7 +55,7 @@ class Translation(IProperty):
         language_code = helpers.random_choice(list(translations.keys()))
         language = LANGUAGES[language_code]
         translation = translations[language_code]
-        return f"is called {translation} in {language}"
+        return f"{grammar.conjugate(tense=article.tense)} called {translation} in {language}"
 
     def available_translations(article: BArticle):
         return {k:v for k,v in article.labels.items() if not v == article.label and k in LANGUAGES}
@@ -80,7 +80,7 @@ class Alias(IProperty):
         alternative_aliases = [(language_code, alias) for language_code, aliases in article.aliases.items() for alias in aliases if not alias == article.label]
         language_code, alias = helpers.random_choice(alternative_aliases)
         language = LANGUAGES[language_code]
-        return f"is also called {alias} in {language}"
+        return f"{grammar.conjugate(tense=article.tense)} also called {alias} in {language}"
 
 
 class InstanceOf(IProperty):
@@ -99,7 +99,7 @@ class InstanceOf(IProperty):
         statement = helpers.random_choice(statements)
         helpers.verify_data_type(statement, "wikibase-item")
         category = helpers.get_label_from_wikibase_item(statement.content)
-        return f"is {helpers.indef_article(category)} {category}"
+        return f"{grammar.conjugate(tense=article.tense)} {grammar.indef_article(category)} {category}"
 
 
 class DateOfBirth(IProperty):
@@ -107,7 +107,7 @@ class DateOfBirth(IProperty):
         return "P569"
 
     def weight():
-        return 150
+        return 50
 
     def has(article: BArticle):
         return DateOfBirth.id() in article.statements
@@ -128,7 +128,7 @@ class PlaceOfBirth(IProperty):
         return "P19"
 
     def weight():
-        return 150
+        return 50
 
     def has(article: BArticle):
         return PlaceOfBirth.id() in article.statements
@@ -147,7 +147,7 @@ class DateOfDeath(IProperty):
         return "P570"
 
     def weight():
-        return 200
+        return 70
 
     def has(article: BArticle):
         return DateOfDeath.id() in article.statements
@@ -168,7 +168,7 @@ class PlaceOfDeath(IProperty):
         return "P20"
 
     def weight():
-        return 200
+        return 70
 
     def has(article: BArticle):
         return PlaceOfDeath.id() in article.statements
